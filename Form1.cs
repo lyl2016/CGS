@@ -10,6 +10,10 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 //引用库
 
+/// <summary>
+/// 代码已跟进至GitHub，欢迎懒鬼Fork
+/// </summary>
+
 namespace _1801080101刘永麟
 {
     public partial class Form1 : Form
