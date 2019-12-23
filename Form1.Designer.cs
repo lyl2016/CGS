@@ -40,6 +40,11 @@
 			this.b样条曲线ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.hermite曲线ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.二维图形变换ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.TransMove = new System.Windows.Forms.ToolStripMenuItem();
+			this.TransRotate = new System.Windows.Forms.ToolStripMenuItem();
+			this.TransScale = new System.Windows.Forms.ToolStripMenuItem();
+			this.TransSymmetry = new System.Windows.Forms.ToolStripMenuItem();
+			this.TransShear = new System.Windows.Forms.ToolStripMenuItem();
 			this.PicCut = new System.Windows.Forms.ToolStripMenuItem();
 			this.CohenCut = new System.Windows.Forms.ToolStripMenuItem();
 			this.图形填充ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -47,10 +52,10 @@
 			this.投影ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.消隐ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.Exit = new System.Windows.Forms.ToolStripMenuItem();
-			this.TransMove = new System.Windows.Forms.ToolStripMenuItem();
-			this.TransRotate = new System.Windows.Forms.ToolStripMenuItem();
-			this.TransScale = new System.Windows.Forms.ToolStripMenuItem();
+			this.MainPicBox = new System.Windows.Forms.PictureBox();
+			this.label1 = new System.Windows.Forms.Label();
 			this.menuStrip1.SuspendLayout();
+			((System.ComponentModel.ISupportInitialize)(this.MainPicBox)).BeginInit();
 			this.SuspendLayout();
 			// 
 			// menuStrip1
@@ -148,10 +153,47 @@
 			this.二维图形变换ToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.TransMove,
             this.TransRotate,
-            this.TransScale});
+            this.TransScale,
+            this.TransSymmetry,
+            this.TransShear});
 			this.二维图形变换ToolStripMenuItem.Name = "二维图形变换ToolStripMenuItem";
 			this.二维图形变换ToolStripMenuItem.Size = new System.Drawing.Size(113, 24);
 			this.二维图形变换ToolStripMenuItem.Text = "二维图形变换";
+			// 
+			// TransMove
+			// 
+			this.TransMove.Name = "TransMove";
+			this.TransMove.Size = new System.Drawing.Size(152, 26);
+			this.TransMove.Text = "图形平移";
+			this.TransMove.Click += new System.EventHandler(this.TransMove_Click);
+			// 
+			// TransRotate
+			// 
+			this.TransRotate.Name = "TransRotate";
+			this.TransRotate.Size = new System.Drawing.Size(152, 26);
+			this.TransRotate.Text = "图形旋转";
+			this.TransRotate.Click += new System.EventHandler(this.TransRotate_Click);
+			// 
+			// TransScale
+			// 
+			this.TransScale.Name = "TransScale";
+			this.TransScale.Size = new System.Drawing.Size(152, 26);
+			this.TransScale.Text = "图形缩放";
+			this.TransScale.Click += new System.EventHandler(this.TransScale_Click);
+			// 
+			// TransSymmetry
+			// 
+			this.TransSymmetry.Name = "TransSymmetry";
+			this.TransSymmetry.Size = new System.Drawing.Size(152, 26);
+			this.TransSymmetry.Text = "对称变换";
+			this.TransSymmetry.Click += new System.EventHandler(this.TransSymmetry_Click);
+			// 
+			// TransShear
+			// 
+			this.TransShear.Name = "TransShear";
+			this.TransShear.Size = new System.Drawing.Size(152, 26);
+			this.TransShear.Text = "错切变换";
+			this.TransShear.Click += new System.EventHandler(this.TransShear_Click);
 			// 
 			// PicCut
 			// 
@@ -164,7 +206,7 @@
 			// CohenCut
 			// 
 			this.CohenCut.Name = "CohenCut";
-			this.CohenCut.Size = new System.Drawing.Size(224, 26);
+			this.CohenCut.Size = new System.Drawing.Size(169, 26);
 			this.CohenCut.Text = "Cohen算法";
 			this.CohenCut.Click += new System.EventHandler(this.CohenCut_Click);
 			// 
@@ -202,41 +244,45 @@
 			this.Exit.Text = "退出";
 			this.Exit.Click += new System.EventHandler(this.Exit_Click);
 			// 
-			// TransMove
+			// MainPicBox
 			// 
-			this.TransMove.Name = "TransMove";
-			this.TransMove.Size = new System.Drawing.Size(224, 26);
-			this.TransMove.Text = "图形平移";
-			this.TransMove.Click += new System.EventHandler(this.TransMove_Click);
+			this.MainPicBox.Location = new System.Drawing.Point(13, 32);
+			this.MainPicBox.Name = "MainPicBox";
+			this.MainPicBox.Size = new System.Drawing.Size(928, 595);
+			this.MainPicBox.TabIndex = 1;
+			this.MainPicBox.TabStop = false;
+			this.MainPicBox.Click += new System.EventHandler(this.MainPicBox_Click);
 			// 
-			// TransRotate
+			// label1
 			// 
-			this.TransRotate.Name = "TransRotate";
-			this.TransRotate.Size = new System.Drawing.Size(224, 26);
-			this.TransRotate.Text = "图形旋转";
-			this.TransRotate.Click += new System.EventHandler(this.TransRotate_Click);
-			// 
-			// TransScale
-			// 
-			this.TransScale.Name = "TransScale";
-			this.TransScale.Size = new System.Drawing.Size(224, 26);
-			this.TransScale.Text = "图形缩放";
-			this.TransScale.Click += new System.EventHandler(this.TransScale_Click);
+			this.label1.AutoSize = true;
+			this.label1.Font = new System.Drawing.Font("宋体", 15F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+			this.label1.Location = new System.Drawing.Point(12, 602);
+			this.label1.Name = "label1";
+			this.label1.Size = new System.Drawing.Size(168, 25);
+			this.label1.TabIndex = 2;
+			this.label1.Text = "单击隐藏画布";
+			this.label1.Visible = false;
+			this.label1.Click += new System.EventHandler(this.Label1_Click);
 			// 
 			// Form1
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(953, 639);
+			this.Controls.Add(this.label1);
+			this.Controls.Add(this.MainPicBox);
 			this.Controls.Add(this.menuStrip1);
 			this.MainMenuStrip = this.menuStrip1;
 			this.Margin = new System.Windows.Forms.Padding(4);
 			this.Name = "Form1";
 			this.Text = "计算机图形学练习平台（刘永麟）";
+			this.Load += new System.EventHandler(this.Form1_Load);
 			this.MouseClick += new System.Windows.Forms.MouseEventHandler(this.Form1_MouseClick);
 			this.MouseMove += new System.Windows.Forms.MouseEventHandler(this.Form1_MouseMove);
 			this.menuStrip1.ResumeLayout(false);
 			this.menuStrip1.PerformLayout();
+			((System.ComponentModel.ISupportInitialize)(this.MainPicBox)).EndInit();
 			this.ResumeLayout(false);
 			this.PerformLayout();
 
@@ -266,6 +312,10 @@
 		private System.Windows.Forms.ToolStripMenuItem TransMove;
 		private System.Windows.Forms.ToolStripMenuItem TransRotate;
 		private System.Windows.Forms.ToolStripMenuItem TransScale;
+		private System.Windows.Forms.ToolStripMenuItem TransSymmetry;
+		private System.Windows.Forms.ToolStripMenuItem TransShear;
+		private System.Windows.Forms.PictureBox MainPicBox;
+		private System.Windows.Forms.Label label1;
 	}
 }
 
