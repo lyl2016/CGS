@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace _1801080101刘永麟
+namespace ThirdGroup
 {
     static class Program
     {
