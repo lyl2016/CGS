@@ -9,6 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Runtime.InteropServices;
 //引用库
 
 /// <summary>
@@ -26,7 +27,7 @@ namespace _1801080101刘永麟
 		/*-- 定义变量 --*/
         Color BackColor1 = Color.White;
         Color ForeColor1 = Color.Black;
-        public int MenuID, PressNum, FirstX, FirstY, OldX, OldY;
+        public int MenuID, PressNum, FirstX, FirstY, OldX, OldY, PointNum, SaveNumber;
 		public int R, XL, XR, YU, YD;
 		Point[] group = new Point[100];
 		Point[] pointsgroup = new Point[4];
@@ -621,21 +622,20 @@ namespace _1801080101刘永麟
 		{
 			MainPicBox.Visible = false;
 		}
-
+		//窗体加载时设置窗体隐藏
 		private void MainPicBox_Click(object sender, EventArgs e)
 		{
 			is_mainpicbox_vis = !is_mainpicbox_vis;
 			MainPicBox.Visible = is_mainpicbox_vis;
 			label1.Visible = is_mainpicbox_vis;
 		}
-
 		private void Label1_Click(object sender, EventArgs e)
 		{
 			is_mainpicbox_vis = !is_mainpicbox_vis;
 			MainPicBox.Visible = is_mainpicbox_vis;
 			label1.Visible = is_mainpicbox_vis;
 		}
-
+		//点击一次关闭画布
 		private void MidLine_Click(object sender, EventArgs e)
         {
             MenuID = 2; PressNum = 0;
