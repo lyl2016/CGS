@@ -32,10 +32,10 @@
 			this.基本图形生成ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.DDALine = new System.Windows.Forms.ToolStripMenuItem();
 			this.MidLine = new System.Windows.Forms.ToolStripMenuItem();
+			this.AntiLine = new System.Windows.Forms.ToolStripMenuItem();
 			this.BresenhamCircle = new System.Windows.Forms.ToolStripMenuItem();
 			this.BezierCurve = new System.Windows.Forms.ToolStripMenuItem();
 			this.MyCharacter = new System.Windows.Forms.ToolStripMenuItem();
-			this.AntiLine = new System.Windows.Forms.ToolStripMenuItem();
 			this.二维图形变换ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.TransMove = new System.Windows.Forms.ToolStripMenuItem();
 			this.TransRotate = new System.Windows.Forms.ToolStripMenuItem();
@@ -92,44 +92,44 @@
 			// DDALine
 			// 
 			this.DDALine.Name = "DDALine";
-			this.DDALine.Size = new System.Drawing.Size(206, 26);
+			this.DDALine.Size = new System.Drawing.Size(187, 26);
 			this.DDALine.Text = "DDA直线";
 			this.DDALine.Click += new System.EventHandler(this.DDALine_Click);
 			// 
 			// MidLine
 			// 
 			this.MidLine.Name = "MidLine";
-			this.MidLine.Size = new System.Drawing.Size(206, 26);
+			this.MidLine.Size = new System.Drawing.Size(187, 26);
 			this.MidLine.Text = "中点直线";
 			this.MidLine.Click += new System.EventHandler(this.MidLine_Click);
+			// 
+			// AntiLine
+			// 
+			this.AntiLine.Name = "AntiLine";
+			this.AntiLine.Size = new System.Drawing.Size(187, 26);
+			this.AntiLine.Text = "反走样直线";
+			this.AntiLine.Click += new System.EventHandler(this.BresenhamLine_Click);
 			// 
 			// BresenhamCircle
 			// 
 			this.BresenhamCircle.Name = "BresenhamCircle";
-			this.BresenhamCircle.Size = new System.Drawing.Size(206, 26);
+			this.BresenhamCircle.Size = new System.Drawing.Size(187, 26);
 			this.BresenhamCircle.Text = "Bresenham圆";
 			this.BresenhamCircle.Click += new System.EventHandler(this.BresenhamCircle_Click);
 			// 
 			// BezierCurve
 			// 
 			this.BezierCurve.Name = "BezierCurve";
-			this.BezierCurve.Size = new System.Drawing.Size(224, 26);
+			this.BezierCurve.Size = new System.Drawing.Size(187, 26);
 			this.BezierCurve.Text = "贝塞尔曲线";
 			this.BezierCurve.Click += new System.EventHandler(this.BezierCurve_Click);
 			// 
 			// MyCharacter
 			// 
 			this.MyCharacter.Name = "MyCharacter";
-			this.MyCharacter.Size = new System.Drawing.Size(206, 26);
+			this.MyCharacter.Size = new System.Drawing.Size(187, 26);
 			this.MyCharacter.Text = "字符";
 			this.MyCharacter.Click += new System.EventHandler(this.MyCharacter_Click);
-			// 
-			// AntiLine
-			// 
-			this.AntiLine.Name = "AntiLine";
-			this.AntiLine.Size = new System.Drawing.Size(206, 26);
-			this.AntiLine.Text = "反走样直线";
-			this.AntiLine.Click += new System.EventHandler(this.BresenhamLine_Click);
 			// 
 			// 二维图形变换ToolStripMenuItem
 			// 
@@ -198,7 +198,7 @@
 			this.GraFill.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.ScanLineFill});
 			this.GraFill.Name = "GraFill";
-			this.GraFill.Size = new System.Drawing.Size(98, 26);
+			this.GraFill.Size = new System.Drawing.Size(98, 24);
 			this.GraFill.Text = "多边形生成";
 			// 
 			// ScanLineFill
@@ -222,30 +222,26 @@
 			// ParalleProjection
 			// 
 			this.ParalleProjection.Name = "ParalleProjection";
-			this.ParalleProjection.Size = new System.Drawing.Size(152, 26);
+			this.ParalleProjection.Size = new System.Drawing.Size(224, 26);
 			this.ParalleProjection.Text = "平行投影";
-			this.ParalleProjection.Click += new System.EventHandler(this.ParalleProjection_Click);
 			// 
 			// PerspectiveProjection
 			// 
 			this.PerspectiveProjection.Name = "PerspectiveProjection";
-			this.PerspectiveProjection.Size = new System.Drawing.Size(152, 26);
+			this.PerspectiveProjection.Size = new System.Drawing.Size(224, 26);
 			this.PerspectiveProjection.Text = "透视投影";
-			this.PerspectiveProjection.Click += new System.EventHandler(this.PerspectiveProjection_Click);
 			// 
 			// SimpleProjection
 			// 
 			this.SimpleProjection.Name = "SimpleProjection";
-			this.SimpleProjection.Size = new System.Drawing.Size(152, 26);
+			this.SimpleProjection.Size = new System.Drawing.Size(224, 26);
 			this.SimpleProjection.Text = "简单投影";
-			this.SimpleProjection.Click += new System.EventHandler(this.SimpleProjection_Click);
 			// 
 			// SceneProjection
 			// 
 			this.SceneProjection.Name = "SceneProjection";
-			this.SceneProjection.Size = new System.Drawing.Size(152, 26);
+			this.SceneProjection.Size = new System.Drawing.Size(224, 26);
 			this.SceneProjection.Text = "场景漫游";
-			this.SceneProjection.Click += new System.EventHandler(this.SceneProjection_Click);
 			// 
 			// Exit
 			// 

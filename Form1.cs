@@ -255,7 +255,7 @@ namespace ThirdGroup
                     {
                         apen = new Pen(Color.FromArgb((int)e * 255, (int)e * 255, (int)e * 255), 1);
                         g.DrawEllipse(apen, p.X, p.Y, 1, 1);//这个点是通过Bresenham算法得到直线点
-                        apen = new Pen(Color.FromArgb((int)(1 - e) * 255, (int)(1 - e) * 255, (int)(1 - e) * 255), 1);
+                        apen = new Pen(Color.FromArgb((int)(1 - e) * 255, (int)(1 - e) * 255, (int)(1 - e) * 255), 2);
                         g.DrawEllipse(apen, p.X, p.Y + 1, 1, 1);//在竖直方向加一个点，具体可以参考直线线宽的处理
                         e += k;
                         if (e >= 1.00)
@@ -277,7 +277,7 @@ namespace ThirdGroup
                     {
                         apen = new Pen(Color.FromArgb((int)e * 255, (int)e * 255, (int)e * 255), 1);
                         g.DrawEllipse(apen, p.X, p.Y, 1, 1);
-                        apen = new Pen(Color.FromArgb((int)(1 - e) * 255, (int)(1 - e) * 255, (int)(1 - e) * 255), 1);
+                        apen = new Pen(Color.FromArgb((int)(1 - e) * 255, (int)(1 - e) * 255, (int)(1 - e) * 255), 2);
                         g.DrawEllipse(apen, p.X + 1, p.Y, 1, 1);//在水平方向上增加一个点
                         e += 1.00 / (k * 1.00);
                         if (e >= 1.00)
@@ -300,7 +300,7 @@ namespace ThirdGroup
                     {
                         apen = new Pen(Color.FromArgb((int)-e * 255, (int)-e * 255, (int)-e * 255), 1);
                         g.DrawEllipse(apen, p.X, p.Y, 1, 1);
-                        apen = new Pen(Color.FromArgb((int)(1 + e) * 255, (int)(1 + e) * 255, (int)(1 + e) * 255), 1);
+                        apen = new Pen(Color.FromArgb((int)(1 + e) * 255, (int)(1 + e) * 255, (int)(1 + e) * 255), 2);
                         g.DrawEllipse(apen, p.X, p.Y - 1, 1, 1);//在竖直方向上增加一个点
                         e += k;
                         if (e <= -1.00)
@@ -322,7 +322,7 @@ namespace ThirdGroup
                     {
                         apen = new Pen(Color.FromArgb((int)e * 255, (int)e * 255, (int)e * 255), 1);
                         g.DrawEllipse(apen, p.X, p.Y, 1, 1);
-                        apen = new Pen(Color.FromArgb((int)(1 - e) * 255, (int)(1 - e) * 255, (int)(1 - e) * 255), 1);
+                        apen = new Pen(Color.FromArgb((int)(1 - e) * 255, (int)(1 - e) * 255, (int)(1 - e) * 255), 2);
                         g.DrawEllipse(apen, p.X + 1, p.Y, 1, 1);//在水平方向上增加一个点
                         e += -1.00 / (k * 1.00);
                         if (e >= 1.00)
@@ -610,11 +610,6 @@ namespace ThirdGroup
                         Bezier1(1);
                         MenuID = 107;
                     }
-                    if (MenuID == 8)
-                    {
-                        BSample1(1);
-                        MenuID = 108;
-                    }
                     PressNum = 0;
                 }
             }
@@ -812,16 +807,12 @@ namespace ThirdGroup
                     }
                     if (MenuID == 107)
                         Bezier1(0);
-                    if (MenuID == 108)
-                        BSample1(0);
                     g.DrawLine(MyPen, e.X - 5, e.Y, e.X + 5, e.Y);
                     g.DrawLine(MyPen, e.X, e.Y - 5, e.X, e.Y + 5);
                     group[SaveNumber].X = e.X;
                     group[SaveNumber].Y = e.Y;
                     if (MenuID == 107)
                         Bezier1(1);
-                    if (MenuID == 108)
-                        BSample1(1);
                 }
             }
         }
@@ -1049,11 +1040,6 @@ namespace ThirdGroup
                     Bezier1(2);
                     MenuID = 7;
                 }
-                if (MenuID == 108)
-                {
-                    BSample1(2);
-                    MenuID = 8;
-                }
                 PressNum = 0;
                 PointNum = 0;
             }
@@ -1218,431 +1204,7 @@ namespace ThirdGroup
             }
         }
         //贝塞尔曲线
-        private void BSample1(int mode)
-        {
-            for (int i = 0; i < PointNum - 3; i++)
-            {
-                BSample_4(mode, group[i], group[i + 1], group[i + 2], group[i + 3]);
-            }
-        }
-        private void BSample_4(int mode, Point p0, Point p1, Point p2, Point p3)
-        {
-            Graphics g = CreateGraphics();
-            Point p = new Point();
-            Point oldp = new Point();
-            Pen MyPen = new Pen(Color.Red, 1);
-            int n = 100;
-            if (mode == 2)
-            {
-                MyPen = new Pen(Color.Red, 1);
-            }
-            if (mode == 1)
-            {
-                MyPen = new Pen(Color.Black, 1);
-            }
-            if (mode == 0)
-            {
-                MyPen = new Pen(Color.White, 1);
-            }
-            oldp = p1;
-            double dt = 1.0 / n;
-            for (double t = 0.0; t <= 1.0; t += dt)
-            {
-                double t1 = (1.0 - t) * (1.0 - t) * (1.0 - t);
-                double t2 = 3.0 * t * t * t - 6.0 * t * t + 4.0;
-                double t3 = -3.0 * t * t * t + 3.0 * t * t + 3.0 * t + 1.0;
-                double t4 = t * t * t;
-                p.X = (int)((t1 * p0.X + t2 * p1.X + t3 * p2.X + t4 * p3.X) / 6.0);
-                p.Y = (int)((t1 * p0.Y + t2 * p1.Y + t3 * p2.Y + t4 * p3.Y) / 6.0);
-                if (t > 0)
-                    g.DrawLine(MyPen, oldp, p);
-                oldp = p;
-            }
-        }
-        //B样条
-        private void ParalleProjection_Click(object sender, EventArgs e)
-        {
-            Graphics g = CreateGraphics();
-            g.Clear(BackColor1);
-            MenuID = 41;
-            Projection1();
-        }
-        private void Projection1()
-        {
-            //模型数据存入数组，完成模型建立
-            modegroup[0] = new Point3D(100, 100, 100);
-            modegroup[1] = new Point3D(200, 100, 100);
-            modegroup[2] = new Point3D(200, 200, 100);
-            modegroup[3] = new Point3D(100, 200, 100);
-            modegroup[4] = new Point3D(100, 100, 200);
-            modegroup[5] = new Point3D(200, 100, 200);
-            modegroup[6] = new Point3D(200, 200, 200);
-            modegroup[7] = new Point3D(100, 200, 200);
-            Point3D vp = new Point3D(50, 30, 500);
-            if (MenuID == 41 || MenuID == 42)
-                vp = InputProjectionDirection();//通过对话框输入投影方向参数
-            for (int i = 0; i < 8; i++)
-            {
-                if (MenuID == 41)
-                    group[i] = ParallelP(vp, modegroup[i]);
-                if (MenuID == 42)
-                    group[i] = PerspectiveP(vp, modegroup[i]);
-                if (MenuID == 43)
-                    group[i] = SimpleP(modegroup[i]);
-            }
-            Graphics g = CreateGraphics();
-            g.DrawLine(Pens.Red, group[0], group[1]);
-            g.DrawLine(Pens.Red, group[1], group[2]);
-            g.DrawLine(Pens.Red, group[2], group[3]);
-            g.DrawLine(Pens.Red, group[3], group[0]);
-            g.DrawLine(Pens.Red, group[4], group[5]);
-            g.DrawLine(Pens.Red, group[5], group[6]);
-            g.DrawLine(Pens.Red, group[6], group[7]);
-            g.DrawLine(Pens.Red, group[7], group[4]);
-            g.DrawLine(Pens.Red, group[0], group[4]);
-            g.DrawLine(Pens.Red, group[1], group[5]);
-            g.DrawLine(Pens.Red, group[2], group[6]);
-            g.DrawLine(Pens.Red, group[3], group[7]);
-        }
-        private Point3D InputProjectionDirection()
-        {
-            Form MyInputForm = new Form();//创建窗口
-            Label label1 = new Label();//创建Label控件
-            Label label2 = new Label();
-            Label label3 = new Label();
-            label1.Text = "X:";
-            label2.Text = "Y:";
-            label3.Text = "Z:";
-            label1.Location = new Point(10, 10);//对Label控件进行定位
-            label2.Location = new Point(10, 40);
-            label3.Location = new Point(10, 70);
-            label1.Width = 30;
-            label2.Width = 30;
-            label3.Width = 30;
 
-            NumericUpDown numeric1 = new NumericUpDown();//创建数据控件
-            NumericUpDown numeric2 = new NumericUpDown();
-            NumericUpDown numeric3 = new NumericUpDown();
-            numeric1.Minimum = 0; numeric1.Maximum = 500;
-            numeric1.Increment = 10; numeric1.Value = 150;
-            numeric2.Minimum = 0; numeric2.Maximum = 500;
-            numeric2.Increment = 10; numeric2.Value = 150;
-            if (MenuID == 41)
-            {
-                numeric3.Minimum = -800; numeric3.Maximum = -300;
-                numeric3.Increment = 10; numeric3.Value = -500;
-            }
-            else
-            {
-                numeric3.Minimum = 300;numeric3.Maximum = 800;
-                numeric3.Increment = 10;numeric3.Value = 500;
-            }
-            numeric1.Location = new Point(50, 10);
-            numeric2.Location = new Point(50, 40);
-            numeric3.Location = new Point(50, 70);
-
-            Button button1 = new Button();//创建按键控件
-            Button button2 = new Button();
-            button1.Text = "确定";
-            button1.DialogResult = DialogResult.OK;
-            button2.Text = "取消";
-            button2.DialogResult = DialogResult.Cancel;
-            button1.Location = new Point(10, 100);
-            button2.Location = new Point(button1.Width + 20, 100);
-            if (MenuID == 41)
-                MyInputForm.Text = "请输入透视投影方向向量";
-            else
-                MyInputForm.Text = "请输入透视投影中心位置";
-            MyInputForm.HelpButton = true;
-            MyInputForm.FormBorderStyle = FormBorderStyle.FixedDialog;
-            MyInputForm.MaximizeBox = false;
-            MyInputForm.MinimizeBox = false;
-            MyInputForm.AcceptButton = button1;
-            MyInputForm.CancelButton = button2;
-            MyInputForm.StartPosition = FormStartPosition.CenterScreen;
-            MyInputForm.Controls.Add(label1);
-            MyInputForm.Controls.Add(label2);
-            MyInputForm.Controls.Add(label3);
-            MyInputForm.Controls.Add(numeric1);
-            MyInputForm.Controls.Add(numeric2);
-            MyInputForm.Controls.Add(numeric3);
-            MyInputForm.Controls.Add(button1);
-            MyInputForm.Controls.Add(button2);
-            Point3D vp = new Point3D(150, 150, -500);
-            if (MyInputForm.ShowDialog() == DialogResult.Cancel)
-            {
-                MyInputForm.Close();
-                return vp;
-            }
-            vp = new Point3D((float)numeric1.Value, (float)numeric2.Value, (float)numeric3.Value);
-            MyInputForm.Close();
-            return vp;
-        }
-        private Point ParallelP(Point3D ViewP, Point3D ModeP)
-        {
-            Point p;
-            int x, y;
-            x = (int)(ModeP.X - ViewP.X / ViewP.Z * ModeP.Z + 0.5);
-            y = (int)(ModeP.Y - ViewP.Y / ViewP.Z * ModeP.Z + 0.5);
-            p = new Point(x, y);
-            return p;
-        }
-        private Point PerspectiveP(Point3D ViewP, Point3D ModeP)
-        {
-            Point p;
-            int x, y;
-            x = (int)(ViewP.X + (ModeP.X - ViewP.X) * ViewP.Z / (ViewP.Z - ModeP.Z) + 0.5);
-            y = (int)(ViewP.Y + (ModeP.Y - ViewP.Y) * ViewP.Z / (ViewP.Z - ModeP.Z) + 0.5);
-            p = new Point(x, y);
-            return p;
-        }
-        private Point SimpleP(Point3D p3d)
-        {
-            Point p;
-            float kx, ky;
-            kx = (float)0.4;ky = (float)0.3;
-            p = new Point((int)(p3d.X - kx * p3d.Z + 0.5), (int)(p3d.Y - ky * p3d.Z + 0.5));
-            return p;
-        }
-        //平行投影
-        private void PerspectiveProjection_Click(object sender, EventArgs e)
-        {
-            Graphics g = CreateGraphics();
-            g.Clear(BackColor1);
-            MenuID = 42;
-            Projection1();
-        }
-        //透视投影
-        private void SimpleProjection_Click(object sender, EventArgs e)
-        {
-            Graphics g = CreateGraphics();
-            g.Clear(BackColor1);
-            MenuID = 43;
-            Projection1();
-        }
-        //简单投影
-        private void SceneProjection_Click(object sender, EventArgs e)
-        {
-            //Graphics g = CreateGraphics();
-            //g.Clear(BackColor1);
-            MenuID = 44;
-            Projection2();
-        }
-        private void Projection2()
-        { //模型数据存入数组
-            modegroup[0] = new Point3D(100, 100, 0);
-            modegroup[1] = new Point3D(200, 100, 0);
-            modegroup[2] = new Point3D(200, 200, 0);
-            modegroup[3] = new Point3D(100, 200, 0);
-            modegroup[4] = new Point3D(100, 100, 200);
-            modegroup[5] = new Point3D(200, 100, 200);
-            modegroup[6] = new Point3D(200, 200, 200);
-            modegroup[7] = new Point3D(100, 200, 200);
-            modegroup[8] = new Point3D(300, 100, 0);
-            modegroup[9] = new Point3D(400, 100, 0);
-            modegroup[10] = new Point3D(400, 200, 0);
-            modegroup[11] = new Point3D(300, 200, 0);
-            modegroup[12] = new Point3D(300, 100, 200);
-            modegroup[13] = new Point3D(400, 100, 200);
-            modegroup[14] = new Point3D(400, 200, 200);
-            modegroup[15] = new Point3D(300, 200, 200);
-            modegroup[16] = new Point3D(100, 300, 0);
-            modegroup[17] = new Point3D(200, 300, 0);
-            modegroup[18] = new Point3D(200, 400, 0);
-            modegroup[19] = new Point3D(100, 400, 0);
-            modegroup[20] = new Point3D(100, 300, 200);
-            modegroup[21] = new Point3D(200, 300, 200);
-            modegroup[22] = new Point3D(200, 400, 200);
-            modegroup[23] = new Point3D(100, 400, 200);
-            modegroup[24] = new Point3D(300, 300, 0);
-            modegroup[25] = new Point3D(400, 300, 0);
-            modegroup[26] = new Point3D(400, 400, 0);
-            modegroup[27] = new Point3D(300, 400, 0);
-            modegroup[28] = new Point3D(300, 300, 200);
-            modegroup[29] = new Point3D(400, 300, 200);
-            modegroup[30] = new Point3D(400, 400, 200);
-            modegroup[31] = new Point3D(300, 400, 200);
-
-            Point3D vp1 = new Point3D(800, 250, 0);
-            Point3D vp2 = new Point3D(400, 250, 0);
-            Point3D vp3 = new Point3D(-800, 0, 20);
-            Point3D vp = new Point3D(800, 250, 0);
-            vp1 = InputProjectionDirection2(1);
-            vp2 = InputProjectionDirection2(2);
-            vp3 = InputProjectionDirection2(3);
-            double steps = 100;
-            for (double j = 0; j < steps; j++)
-            {
-                vp.X = (int)((1.0 - j / steps) * vp1.X + j / steps * vp2.X);
-                vp.Y = (int)((1.0 - j / steps) * vp1.Y + j / steps * vp2.Y);
-                vp.Z = (int)((1.0 - j / steps) * vp1.Z + j / steps * vp2.Z);
-                for (int i = 0; i < 32; i++)
-                {
-                    group[i] = ScenceP(vp, vp3, modegroup[i]);
-                }
-                Graphics g = CreateGraphics();
-                g.Clear(Color.LightGray);
-                g.DrawLine(Pens.Red, group[0], group[1]);
-                g.DrawLine(Pens.Red, group[1], group[2]);
-                g.DrawLine(Pens.Red, group[2], group[3]);
-                g.DrawLine(Pens.Red, group[3], group[0]);
-                g.DrawLine(Pens.Red, group[4], group[5]);
-                g.DrawLine(Pens.Red, group[5], group[6]);
-                g.DrawLine(Pens.Red, group[6], group[7]);
-                g.DrawLine(Pens.Red, group[7], group[4]);
-                g.DrawLine(Pens.Red, group[0], group[4]);
-                g.DrawLine(Pens.Red, group[1], group[5]);
-                g.DrawLine(Pens.Red, group[2], group[6]);
-                g.DrawLine(Pens.Red, group[3], group[7]);
-                g.DrawLine(Pens.Green, group[8], group[9]);
-                g.DrawLine(Pens.Green, group[9], group[10]);
-                g.DrawLine(Pens.Green, group[10], group[11]);
-                g.DrawLine(Pens.Green, group[11], group[8]);
-                g.DrawLine(Pens.Green, group[12], group[13]);
-                g.DrawLine(Pens.Green, group[13], group[14]);
-                g.DrawLine(Pens.Green, group[14], group[15]);
-                g.DrawLine(Pens.Green, group[15], group[12]);
-                g.DrawLine(Pens.Green, group[8], group[12]);
-                g.DrawLine(Pens.Green, group[9], group[13]);
-                g.DrawLine(Pens.Green, group[10], group[14]);
-                g.DrawLine(Pens.Green, group[11], group[15]);
-                g.DrawLine(Pens.Blue, group[16], group[17]);
-                g.DrawLine(Pens.Blue, group[17], group[18]);
-                g.DrawLine(Pens.Blue, group[18], group[19]);
-                g.DrawLine(Pens.Blue, group[19], group[16]);
-                g.DrawLine(Pens.Blue, group[20], group[21]);
-                g.DrawLine(Pens.Blue, group[21], group[22]);
-                g.DrawLine(Pens.Blue, group[22], group[23]);
-                g.DrawLine(Pens.Blue, group[23], group[20]);
-                g.DrawLine(Pens.Blue, group[16], group[20]);
-                g.DrawLine(Pens.Blue, group[17], group[21]);
-                g.DrawLine(Pens.Blue, group[18], group[22]);
-                g.DrawLine(Pens.Blue, group[19], group[23]);
-                g.DrawLine(Pens.Black, group[24], group[25]);
-                g.DrawLine(Pens.Black, group[25], group[26]);
-                g.DrawLine(Pens.Black, group[26], group[27]);
-                g.DrawLine(Pens.Black, group[27], group[24]);
-                g.DrawLine(Pens.Black, group[28], group[29]);
-                g.DrawLine(Pens.Black, group[29], group[30]);
-                g.DrawLine(Pens.Black, group[30], group[31]);
-                g.DrawLine(Pens.Black, group[31], group[28]);
-                g.DrawLine(Pens.Black, group[24], group[28]);
-                g.DrawLine(Pens.Black, group[25], group[29]);
-                g.DrawLine(Pens.Black, group[26], group[30]);
-                g.DrawLine(Pens.Black, group[27], group[31]);
-                System.Threading.Thread.Sleep(30);
-            }
-        }
-        private Point3D InputProjectionDirection2(int mode)
-        {
-            Form MyInputForm = new Form();
-            Label label1 = new Label();
-            Label label2 = new Label();
-            Label label3 = new Label();
-            label1.Text = "X";
-            label2.Text = "Y";
-            label3.Text = "Z";
-            label1.Location = new Point(10, 10);
-            label2.Location = new Point(10, 40);
-            label3.Location = new Point(10, 70);
-
-            NumericUpDown numeric1 = new NumericUpDown();
-            NumericUpDown numeric2 = new NumericUpDown();
-            NumericUpDown numeric3 = new NumericUpDown();
-            Point3D vp = new Point3D(150, 150, -500);
-            if (mode == 1)
-            {
-                numeric1.Minimum = 600; numeric1.Maximum = 800;
-                numeric1.Increment = 10; numeric1.Value = 800;
-                numeric2.Minimum = 210; numeric2.Maximum = 290;
-                numeric2.Increment = 5; numeric2.Value = 250;
-                numeric3.Minimum = 0; numeric3.Maximum = 500;
-                numeric3.Increment = 10; numeric3.Value = 0;
-            }
-            if (mode == 2)
-            {
-                numeric1.Minimum = 400; numeric1.Maximum = 500;
-                numeric1.Increment = 10; numeric1.Value = 400;
-                numeric2.Minimum = 210; numeric2.Maximum = 290;
-                numeric2.Increment = 5; numeric2.Value = 250;
-                numeric3.Minimum = 0; numeric3.Maximum = 500;
-                numeric3.Increment = 10; numeric3.Value = 0;
-            }
-            if (mode == 3)
-            {
-                numeric1.Minimum = -900; numeric1.Maximum = -800;
-                numeric1.Increment = 5; numeric1.Value = -800;
-                numeric2.Minimum = -50; numeric2.Maximum = 50;
-                numeric2.Increment = 10; numeric2.Value = 0;
-                numeric3.Minimum = -100; numeric3.Maximum = 100;
-                numeric3.Increment = 10; numeric3.Value = 20;
-            }
-            numeric1.Location = new Point(30, 10);
-            numeric2.Location = new Point(30, 40);
-            numeric3.Location = new Point(30, 70);
-            Button button1 = new Button();
-            Button button2 = new Button();
-            button1.Text = "确定";
-            button1.DialogResult = DialogResult.OK;
-            button1.Location = new Point(10, 100);
-            button2.Text = "取消";
-            button2.DialogResult = DialogResult.Cancel;
-            button2.Location = new Point(button1.Width + 20, 100);
-            if (mode == 1)
-                MyInputForm.Text = "请输入漫游起点";
-            if (mode == 2)
-                MyInputForm.Text = "请输入漫游终点";
-            if (mode == 3)
-                MyInputForm.Text = "请输入观测方向";
-            MyInputForm.HelpButton = true;
-            MyInputForm.FormBorderStyle = FormBorderStyle.FixedDialog;
-            MyInputForm.MaximizeBox = false;
-            MyInputForm.MinimizeBox = false;
-            MyInputForm.AcceptButton = button1;
-            MyInputForm.CancelButton = button2;
-            MyInputForm.StartPosition = FormStartPosition.CenterScreen;
-            MyInputForm.Controls.Add(numeric1);
-            MyInputForm.Controls.Add(numeric2);
-            MyInputForm.Controls.Add(numeric3);
-            MyInputForm.Controls.Add(label1);
-            MyInputForm.Controls.Add(label2);
-            MyInputForm.Controls.Add(label3);
-            MyInputForm.Controls.Add(button1);
-            MyInputForm.Controls.Add(button2);
-            vp = new Point3D((float)numeric1.Value, (float)numeric2.Value, (float)numeric3.Value);
-            if (MyInputForm.ShowDialog() == DialogResult.Cancel)
-            {
-                MyInputForm.Close();
-                return vp;
-            }
-            vp = new Point3D((float)numeric1.Value, (float)numeric2.Value, (float)numeric3.Value);
-            MyInputForm.Close();
-            return vp;
-        }
-        private Point ScenceP(Point3D ViewP, Point3D DirP, Point3D ModeP)
-        {
-            double a11, a12, a13, a21, a22, a23, a31, a32, a33;
-            a11 = Math.Sqrt(DirP.X * DirP.X + DirP.Y * DirP.Y + DirP.Z * DirP.Z);
-            a31 = DirP.X / a11; a32 = DirP.Y / a11; a33 = DirP.Z / a11;
-            a12 = Math.Sqrt(a31 * a31 / (a31 * a31 + a32 * a32));
-            a11 = -Math.Sqrt(a32 * a32 / (a31 * a31 + a32 * a32));
-            a13 = 0;
-            a23 = a11 * a32 - a12 * a31;
-	        if (a23 < 0)
-            {
-                a23 = -a23; a12 = -a12; a11 = -a11;
-            }
-            a21 = a12 * a33;
-            a22 = -a11 * a33;
-            Point p;
-            double z, x, y;
-            z = a31 * (ModeP.X - ViewP.X) + a32 * (ModeP.Y - ViewP.Y) + a33 * (ModeP.Z - ViewP.Z);
-            x = (100.0 * (a11 * (ModeP.X - ViewP.X) + a12 * (ModeP.Y - ViewP.Y)) / z) + 300;
-            y = -(100.0 * (a21 * (ModeP.X - ViewP.X) + a22 * (ModeP.Y - ViewP.Y) + a23 * (ModeP.Z - ViewP.Z)) / z) + 500;
-            p = new Point((int)x, (int)y);
-            return p;
-        }
-        //场景投影
         private void BresenhamLine_Click(object sender, EventArgs e)
         {
             MenuID = 3; PressNum = 0;
