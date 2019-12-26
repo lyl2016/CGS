@@ -1,12 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Windows.Forms.DataVisualization.Charting;
 using System.IO;
@@ -20,8 +17,6 @@ namespace ThirdGroup
             InitializeComponent();
         }
 
-        
-
         /*-- 定义变量 --*/
         Color BackColor1 = Color.White;
         Color ForeColor1 = Color.Black;
@@ -29,7 +24,7 @@ namespace ThirdGroup
         public int R, XL, XR, YU, YD;
         Point[] group = new Point[100];
         Point[] pointsgroup = new Point[4];
-        bool is_mainpicbox_vis = false;
+        bool is_mainpicbox_vis = false;//画布可视设置
         public struct EdgeInfo
         {
             int ymax, ymin;//Y的上下端点
@@ -42,7 +37,8 @@ namespace ThirdGroup
             {
                 ymax = y2; ymin = y1; xmin = (float)x1; k = (float)(x1 - x2) / (float)(y1 - y2);
             }
-        }//扫描线填充算法预定义结构
+        }
+        //扫描线填充算法预定义结构
         Point3D[] modegroup = new Point3D[50];
         //string filepath_polyline;//represent a path of a polyline shapefile
         string filepath_polygon;//represent a path of a polygon shapefile
@@ -65,7 +61,7 @@ namespace ThirdGroup
             if (x0 == x1 && y0 == y1)
             {
                 return;
-            }
+            }//两点重合
             if (x0 == x1)
             {
                 if (y0 > y1)
@@ -77,7 +73,7 @@ namespace ThirdGroup
                     g.DrawRectangle(Pens.Red, x1, x, 1, 1);
                 }
                 return;
-            }
+            }//直线垂直
             if (y0 == y1)
             {
                 if (x0 > x1)
@@ -89,35 +85,35 @@ namespace ThirdGroup
                     g.DrawRectangle(Pens.Red, x, y0, 1, 1);
                 }
                 return;
-            }
+            }//直线平行
             if (x0 > x1)
             {
                 x = x0; x0 = x1; x1 = x;
                 x = y0; y0 = y1; y1 = x;
-            }
+            }//首末点交换
             flag = 0;
-            if (x1 - x0 > y1 - y0 && y1 - y0 > 0)
+            if (x1 - x0 > y1 - y0 && y1 - y0 > 0)//斜率小于1
                 flag = 1;
             if (x1 - x0 > y0 - y1 && y0 - y1 > 0)
             {
                 flag = 2; y0 = -y0; y1 = -y1;
-            }
+            }//斜率为负，绝对值小于1
             if (y1 - y0 > x1 - x0)
             {
                 flag = 3; x = x0; x0 = y0; y0 = x; x = x1; x1 = y1; y1 = x;
-            }
+            }//斜率大于1
             if (y0 - y1 > x1 - x0)
             {
                 flag = 4; x = x0; x0 = -y0; y0 = x; x = x1; x1 = -y1; y1 = x;
-            }
-            m = (float)(y1 - y0) / (float)(x1 - x0);
+            }//斜率为负，绝对值大于1
+            m = (float)(y1 - y0) / (float)(x1 - x0);//计算转换后斜率
             for (x = x0, y = (float)y0; x <= x1; x++, y += m)
             {
                 if (flag == 1) g.DrawRectangle(Pens.Red, x, (int)(y + 0.5), 1, 1);
                 if (flag == 2) g.DrawRectangle(Pens.Red, x, -(int)(y + 0.5), 1, 1);
                 if (flag == 3) g.DrawRectangle(Pens.Red, (int)(y + 0.5), x, 1, 1);
                 if (flag == 4) g.DrawRectangle(Pens.Red, (int)(y + 0.5), -x, 1, 1);
-            }
+            }//按斜率为（0，1）之间的情况画线
         }
         //DDA直线绘图方法
         private void MidLine1(int x0, int y0, int x1, int y1)
@@ -172,6 +168,7 @@ namespace ThirdGroup
             {
                 flag = 4; x = x0; x0 = -y0; y0 = x; x = x1; x1 = -y1; y1 = x;
             }
+            //按照同上述方式进行直线处理
             x = x0; y = y0; d = (x1 - x0) - 2 * (y1 - y0);
             while (x < x1 + 1)
             {
@@ -195,8 +192,8 @@ namespace ThirdGroup
         {
             int r, d, x, y;
             Graphics g = CreateGraphics();
-            r = (int)(Math.Sqrt((x1 - x0) * (x1 - x0) + (y1 - y0) * (y1 - y0)) + 0.5);
-            x = 0; y = r; d = 3 - 2 * r;
+            r = (int)(Math.Sqrt((x1 - x0) * (x1 - x0) + (y1 - y0) * (y1 - y0)) + 0.5);//取圆半径，归整
+            x = 0; y = r; d = 3 - 2 * r;//取步进值
             while (x < y || x == y)
             {
                 g.DrawRectangle(Pens.Blue, x + x0, y + y0, 1, 1);
@@ -207,6 +204,7 @@ namespace ThirdGroup
                 g.DrawRectangle(Pens.Red, -y + x0, x + y0, 1, 1);
                 g.DrawRectangle(Pens.Red, y + x0, -x + y0, 1, 1);
                 g.DrawRectangle(Pens.Red, -y + x0, -x + y0, 1, 1);
+                //八分画圆
                 x += 1;
                 if (d < 0 || d == 0)
                 {
@@ -216,9 +214,129 @@ namespace ThirdGroup
                 {
                     y -= 1; d = d + 4 * (x - y) + 10;
                 }
+                //分情况计算步进
             }
         }
         //Bresenham画圆绘图方法
+        private void AntiLine1(int x0, int y0, int x1, int y1)
+        {
+            Graphics g = CreateGraphics();
+            Point p0 = new Point(x0, y0), p1 = new Point(x1, y1), p, temp;
+            int dx = p1.X - p0.X, dy = p1.Y - p0.Y;
+            double k = (dy * 1.00) / (dx * 1.00);//计算直线的斜率
+            if (dx == 0)//如果是垂线的情况
+            {
+                if (dy < 0)
+                {
+                    temp = p0;
+                    p0 = p1;
+                    p1 = temp;
+                }//如果p0在上方，交换p1,p0
+                for (p = p0; p.Y < p1.Y; p.Y++)
+                {
+                    g.DrawEllipse(Pens.Black, p.X, p.Y, 1, 1);
+                }//由下至上依次画点
+            }
+            else
+            {
+                double e = 0.00;//定义一个增量
+                Pen apen = new Pen(Color.FromArgb((int)e * 255, (int)e * 255, (int)e * 255), 1);/*定义一只画笔，此画笔赋予的是RGB值，
+                通过增量值来判断此点与直线真实点的偏差来赋予不同的灰度值*/
+                /*此块将按照斜率对不同情况的直线进行分类，然后进行反走样直线的生成*/
+                if (k >= 0 && k <= 1)
+                {
+                    if (dx < 0)
+                    {
+                        temp = p0;
+                        p0 = p1;
+                        p1 = temp;
+                    }//如果p1在左下方，调换p0,p1的位置
+                    for (p = p0; p.X < p1.X; p.X++)//按照X增的方向依次画点
+                    {
+                        apen = new Pen(Color.FromArgb((int)e * 255, (int)e * 255, (int)e * 255), 1);
+                        g.DrawEllipse(apen, p.X, p.Y, 1, 1);//这个点是通过Bresenham算法得到直线点
+                        apen = new Pen(Color.FromArgb((int)(1 - e) * 255, (int)(1 - e) * 255, (int)(1 - e) * 255), 1);
+                        g.DrawEllipse(apen, p.X, p.Y + 1, 1, 1);//在竖直方向加一个点，具体可以参考直线线宽的处理
+                        e += k;
+                        if (e >= 1.00)
+                        {
+                            p.Y++;
+                            e -= 1;
+                        }//当增量大于1时减去1，并对Y++
+                    }
+                }
+                else if (k > 1)
+                {
+                    if (dy < 0)
+                    {
+                        temp = p0;
+                        p0 = p1;
+                        p1 = temp;
+                    }// 如果p1在左下方，调换p0,p1的位置
+                    for (p = p0; p.Y < p1.Y; p.Y++)//按照Y增的方向依次画点
+                    {
+                        apen = new Pen(Color.FromArgb((int)e * 255, (int)e * 255, (int)e * 255), 1);
+                        g.DrawEllipse(apen, p.X, p.Y, 1, 1);
+                        apen = new Pen(Color.FromArgb((int)(1 - e) * 255, (int)(1 - e) * 255, (int)(1 - e) * 255), 1);
+                        g.DrawEllipse(apen, p.X + 1, p.Y, 1, 1);//在水平方向上增加一个点
+                        e += 1.00 / (k * 1.00);
+                        if (e >= 1.00)
+                        {
+                            p.X++;
+                            e -= 1;
+                        }//应为是按照Y增的方向，所以增量去斜率的倒数
+                    }
+                }
+                else if (k >= -1 && k < 0)
+                {
+                    e = 0.00;
+                    if (dx < 0)
+                    {
+                        temp = p0;
+                        p0 = p1;
+                        p1 = temp;
+                    }//如果p1在左上方，交换p1,p0的位置
+                    for (p = p0; p.X < p1.X; p.X++)//按照X增的方向依次画点
+                    {
+                        apen = new Pen(Color.FromArgb((int)-e * 255, (int)-e * 255, (int)-e * 255), 1);
+                        g.DrawEllipse(apen, p.X, p.Y, 1, 1);
+                        apen = new Pen(Color.FromArgb((int)(1 + e) * 255, (int)(1 + e) * 255, (int)(1 + e) * 255), 1);
+                        g.DrawEllipse(apen, p.X, p.Y - 1, 1, 1);//在竖直方向上增加一个点
+                        e += k;
+                        if (e <= -1.00)
+                        {
+                            p.Y--;
+                            e += 1;
+                        }//应为k为负数，所以当增量小于-1时Y--
+                    }
+                }
+                else if (k < -1)
+                {
+                    if (dy > 0)
+                    {
+                        temp = p0;
+                        p0 = p1;
+                        p1 = temp;
+                    }//如果p1在左上方，交换p1,p0的位置
+                    for (p = p0; p.Y > p1.Y; p.Y--)//按照Y减小的方向依次画点
+                    {
+                        apen = new Pen(Color.FromArgb((int)e * 255, (int)e * 255, (int)e * 255), 1);
+                        g.DrawEllipse(apen, p.X, p.Y, 1, 1);
+                        apen = new Pen(Color.FromArgb((int)(1 - e) * 255, (int)(1 - e) * 255, (int)(1 - e) * 255), 1);
+                        g.DrawEllipse(apen, p.X + 1, p.Y, 1, 1);//在水平方向上增加一个点
+                        e += -1.00 / (k * 1.00);
+                        if (e >= 1.00)
+                        {
+                            p.X++;
+                            e -= 1;
+                        }//应为是按照Y减小的方向进行画点，所以增量取负的斜率的倒数
+                    }
+                }
+            }
+        }
+        /*本反走样直线的直线生成算法采用的是Bresenham直线生成算法，反走样的算法采用的是wu反走样算法，
+         * 它给最靠近理想直线或者曲线的两个点给与不同的亮度值，以达到模糊锯齿的效果，使大家看到的是线附近亮度的平均值，
+         * 本算法相对的简单快速。*/
         private void CohenCut1(int x1, int y1, int x2, int y2)
         {
             int code1 = 0, code2 = 0, code, x = 0, y = 0;
@@ -226,6 +344,7 @@ namespace ThirdGroup
             g.DrawLine(Pens.Red, x1, y1, x2, y2);//画原始线段
             code1 = encode(x1, y1);
             code2 = encode(x2, y2);
+            //对裁切的两点线进行编码，判断是否需要处理
             Console.WriteLine("Begining code:");
             Console.WriteLine(Convert.ToString(code1) + " " + Convert.ToString(code2));
             Console.WriteLine(Convert.ToString(x1) + " " + Convert.ToString(y1));
@@ -239,7 +358,7 @@ namespace ThirdGroup
                     return;
                 } //完全不可见
                 code = code1;
-                if (code1 == 0) code = code2;
+                if (code1 == 0) code = code2; //对编码为0001 0010 0100 1000四种情况进行处理
                 if ((1 & code) != 0)
                 {
                     x = XL;
@@ -291,6 +410,8 @@ namespace ThirdGroup
             if (x > XR && y > YU) code = 6;
             if (x < XL && y < YD) code = 9;
             if (x > XR && y < YD) code = 10;
+            //共有九种情况，对原始代码进行了几处修改
+            //修正了无响应的问题
             Console.WriteLine(Convert.ToString(x) + " " + Convert.ToString(y));
             return code;
         }
@@ -360,14 +481,17 @@ namespace ThirdGroup
             {
                 angle = 3.1415926 / 2.0;
             }
+            //平角情况
             else if (x1 == x2 && y1 > y2)
             {
                 angle = 3.1415926 * 1.5;
             }
+            //垂直情况
             else
             {
                 angle = Math.Atan((double)(y2 - y1) / (double)(x2 - x1));
             }
+            //一般情况
             angle = angle * 180.0 / 3.1415926;//角度单位转换
             Matrix myMatrix = new Matrix();
             myMatrix.Translate(-x1, -y1);
@@ -379,7 +503,7 @@ namespace ThirdGroup
             Graphics g = CreateGraphics();
             g.Transform = myMatrix;
             g.DrawPolygon(Pens.Bisque, pointsgroup);
-
+            //矩阵运算，重构图形
         }
         //TransSymmetry对称方法
         private void TransShear1(int x1, int y1, int x2, int y2)
@@ -413,10 +537,11 @@ namespace ThirdGroup
             g.Transform = myMatrix;
             g.DrawPolygon(Pens.BlueViolet, pointsgroup);
         }
-
+        //TransShear错切方法
         /*-- 图形事件 --*/
         private void Exit_Click(object sender, EventArgs e)
         {
+            MessageBox.Show(",4e8c,679a,76ee,8bf4,ff0c,5c11,5199,4e00,4efd,62a5,544a,7684,611f,89c9,597d,723d,ff01,ff01,ff01");
             this.Close();
         }
         //退出功能键
@@ -438,7 +563,7 @@ namespace ThirdGroup
                     if (MenuID == 2)
                         MidLine1(FirstX, FirstY, e.X, e.Y);
                     if (MenuID == 3)
-                        BresenhamLine1(FirstX, FirstY, e.X, e.Y);
+                        AntiLine1(FirstX, FirstY, e.X, e.Y);
                 }
                 PressNum++;
                 if (PressNum >= 2) PressNum = 0;
@@ -626,6 +751,7 @@ namespace ThirdGroup
                     PressNum = 0;
                 }
             }
+            //通过预定义的菜单号给出响应
         }
         //预定义画布
         private void Form1_MouseMove(object sender, MouseEventArgs e)
@@ -699,7 +825,7 @@ namespace ThirdGroup
                 }
             }
         }
-        //确认绘图终点(橡皮筋)
+        //辅助成图(橡皮筋)
         private void DDALine_Click(object sender, EventArgs e)
         {
             MenuID = 1; PressNum = 0;
@@ -719,6 +845,7 @@ namespace ThirdGroup
             MainPicBox.Visible = is_mainpicbox_vis;
             label1.Visible = is_mainpicbox_vis;
         }
+        //单击画布时设置隐藏
         private void Label1_Click(object sender, EventArgs e)
         {
             is_mainpicbox_vis = !is_mainpicbox_vis;
@@ -883,20 +1010,7 @@ namespace ThirdGroup
             //g.Clear(BackColor1);
         }
         //ScanLineFill预定义画布
-
-        private void WindowCut_Click(object sender, EventArgs e)
-        {
-            MenuID = 24; PressNum = 0;
-            Graphics g = CreateGraphics();  //创建图形设备
-            g.Clear(BackColor1);          //设置背景色
-            XL = 100; XR = 400; YD = 100; YU = 400;
-            pointsgroup[0] = new Point(XL, YD);
-            pointsgroup[1] = new Point(XR, YD);
-            pointsgroup[2] = new Point(XR, YU);
-            pointsgroup[3] = new Point(XL, YU);
-            g.DrawPolygon(Pens.Blue, pointsgroup); //画出裁剪窗口
-        }
-        private void WindowCut1()           //多边形和裁剪结果都存放在group数组中
+        private void WindowCut1()
         {
             group[PressNum] = group[0];     //将第一点复制为数组最后一组
             EdgeClipping(0);
@@ -914,7 +1028,7 @@ namespace ThirdGroup
             for (int i = 0; i < PressNum; i++)  //绘制裁剪多边形
                 g.DrawLine(MyPen, group[i], group[i + 1]);
         }
-
+        //多边形和裁剪结果都存放在group数组中
         private void Form1_MouseDoubleClick(object sender, MouseEventArgs e)
         {
             Graphics g = CreateGraphics();
@@ -944,7 +1058,7 @@ namespace ThirdGroup
                 PointNum = 0;
             }
         }
-
+        //定义双击事件
         private void EdgeClipping(int linecode)
         {
             float x, y;
@@ -1075,7 +1189,7 @@ namespace ThirdGroup
                 PressNum = number1;
             }
         }
-
+        //窗口裁切
         private void BezierCurve_Click(object sender, EventArgs e)
         {
             MenuID = 7;
@@ -1103,13 +1217,7 @@ namespace ThirdGroup
                 Bezier_4(mode, p[j], p[j + 1], p[j + 2], p[j + 3]);
             }
         }
-
-        private void BSampleCurve_Click(object sender, EventArgs e)
-        {
-            MenuID = 8;PressNum = 0;PointNum = 0;
-            Graphics g = CreateGraphics();
-            g.Clear(BackColor1);
-        }
+        //贝塞尔曲线
         private void BSample1(int mode)
         {
             for (int i = 0; i < PointNum - 3; i++)
@@ -1151,7 +1259,7 @@ namespace ThirdGroup
                 oldp = p;
             }
         }
-
+        //B样条
         private void ParalleProjection_Click(object sender, EventArgs e)
         {
             Graphics g = CreateGraphics();
@@ -1296,7 +1404,7 @@ namespace ThirdGroup
             p = new Point((int)(p3d.X - kx * p3d.Z + 0.5), (int)(p3d.Y - ky * p3d.Z + 0.5));
             return p;
         }
-
+        //平行投影
         private void PerspectiveProjection_Click(object sender, EventArgs e)
         {
             Graphics g = CreateGraphics();
@@ -1304,7 +1412,7 @@ namespace ThirdGroup
             MenuID = 42;
             Projection1();
         }
-
+        //透视投影
         private void SimpleProjection_Click(object sender, EventArgs e)
         {
             Graphics g = CreateGraphics();
@@ -1312,7 +1420,7 @@ namespace ThirdGroup
             MenuID = 43;
             Projection1();
         }
-
+        //简单投影
         private void SceneProjection_Click(object sender, EventArgs e)
         {
             //Graphics g = CreateGraphics();
@@ -1366,8 +1474,8 @@ namespace ThirdGroup
             for (double j = 0; j < steps; j++)
             {
                 vp.X = (int)((1.0 - j / steps) * vp1.X + j / steps * vp2.X);
-                vp.Y = (int)((1.0 - j / steps) * vp1.Y + j / steps * vp2.X);
-                vp.Z = (int)((1.0 - j / steps) * vp1.Z + j / steps * vp2.X);
+                vp.Y = (int)((1.0 - j / steps) * vp1.Y + j / steps * vp2.Y);
+                vp.Z = (int)((1.0 - j / steps) * vp1.Z + j / steps * vp2.Z);
                 for (int i = 0; i < 32; i++)
                 {
                     group[i] = ScenceP(vp, vp3, modegroup[i]);
@@ -1402,7 +1510,7 @@ namespace ThirdGroup
                 g.DrawLine(Pens.Blue, group[17], group[18]);
                 g.DrawLine(Pens.Blue, group[18], group[19]);
                 g.DrawLine(Pens.Blue, group[19], group[16]);
-                g.DrawLine(Pens.Blue, group[20], group[20]);
+                g.DrawLine(Pens.Blue, group[20], group[21]);
                 g.DrawLine(Pens.Blue, group[21], group[22]);
                 g.DrawLine(Pens.Blue, group[22], group[23]);
                 g.DrawLine(Pens.Blue, group[23], group[20]);
@@ -1444,12 +1552,12 @@ namespace ThirdGroup
             Point3D vp = new Point3D(150, 150, -500);
             if (mode == 1)
             {
-                numeric1.Minimum = -600; numeric1.Maximum = 800;
-                numeric1.Increment = 10; numeric1.Value = 15;
-                numeric2.Minimum = -210; numeric2.Maximum = 290;
-                numeric2.Increment = 5; numeric2.Value = 25;
+                numeric1.Minimum = 600; numeric1.Maximum = 800;
+                numeric1.Increment = 10; numeric1.Value = 800;
+                numeric2.Minimum = 210; numeric2.Maximum = 290;
+                numeric2.Increment = 5; numeric2.Value = 250;
                 numeric3.Minimum = 0; numeric3.Maximum = 500;
-                numeric3.Increment = 10; numeric3.Value = 35;
+                numeric3.Increment = 10; numeric3.Value = 0;
             }
             if (mode == 2)
             {
@@ -1534,7 +1642,7 @@ namespace ThirdGroup
             p = new Point((int)x, (int)y);
             return p;
         }
-
+        //场景投影
         private void BresenhamLine_Click(object sender, EventArgs e)
         {
             MenuID = 3; PressNum = 0;
@@ -1579,7 +1687,6 @@ namespace ThirdGroup
                 { y++; e = e - 2 * dx; }
             }
         }
-
         private void MyCharacter_Click(object sender, EventArgs e)
         {
             Graphics g = CreateGraphics();
@@ -1592,7 +1699,7 @@ namespace ThirdGroup
                 return;
             }
         }
-
+        //字符生成
 
         private void Bezier_4(int mode,Point p1,Point p2,Point p3,Point p4)
         {
@@ -1669,6 +1776,7 @@ namespace ThirdGroup
                 oldp = p;
             }
         }
+        //贝塞尔曲线预调用方法
     }
     struct EdgeInfo
     {
@@ -2227,4 +2335,5 @@ namespace ThirdGroup
         ///判断点是否在多边形内
         ///参数PointF pt指定点，PolyGon poly指定一个多边形
     }
+    //多边形表，内含处理方法以及构造函数
 }

@@ -63,6 +63,11 @@
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Form3.Designer.cs" />
+    <Compile Include="Form31.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Form3.resx</DependentUpon>
+    </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Form1.resx">
@@ -71,7 +76,10 @@
     <EmbeddedResource Include="Form2.resx">
       <DependentUpon>Form2.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Form3.resx" />
+    <EmbeddedResource Include="Form3.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Form31.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>

@@ -35,6 +35,7 @@
 			this.BresenhamCircle = new System.Windows.Forms.ToolStripMenuItem();
 			this.BezierCurve = new System.Windows.Forms.ToolStripMenuItem();
 			this.MyCharacter = new System.Windows.Forms.ToolStripMenuItem();
+			this.AntiLine = new System.Windows.Forms.ToolStripMenuItem();
 			this.二维图形变换ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.TransMove = new System.Windows.Forms.ToolStripMenuItem();
 			this.TransRotate = new System.Windows.Forms.ToolStripMenuItem();
@@ -53,6 +54,7 @@
 			this.Exit = new System.Windows.Forms.ToolStripMenuItem();
 			this.MainPicBox = new System.Windows.Forms.PictureBox();
 			this.label1 = new System.Windows.Forms.Label();
+			this.label2 = new System.Windows.Forms.Label();
 			this.menuStrip1.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.MainPicBox)).BeginInit();
 			this.SuspendLayout();
@@ -70,7 +72,7 @@
 			this.menuStrip1.Location = new System.Drawing.Point(0, 0);
 			this.menuStrip1.Name = "menuStrip1";
 			this.menuStrip1.Padding = new System.Windows.Forms.Padding(5, 2, 0, 2);
-			this.menuStrip1.Size = new System.Drawing.Size(847, 28);
+			this.menuStrip1.Size = new System.Drawing.Size(900, 28);
 			this.menuStrip1.TabIndex = 0;
 			this.menuStrip1.Text = "menuStrip1";
 			// 
@@ -79,6 +81,7 @@
 			this.基本图形生成ToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.DDALine,
             this.MidLine,
+            this.AntiLine,
             this.BresenhamCircle,
             this.BezierCurve,
             this.MyCharacter});
@@ -89,21 +92,21 @@
 			// DDALine
 			// 
 			this.DDALine.Name = "DDALine";
-			this.DDALine.Size = new System.Drawing.Size(224, 26);
+			this.DDALine.Size = new System.Drawing.Size(206, 26);
 			this.DDALine.Text = "DDA直线";
 			this.DDALine.Click += new System.EventHandler(this.DDALine_Click);
 			// 
 			// MidLine
 			// 
 			this.MidLine.Name = "MidLine";
-			this.MidLine.Size = new System.Drawing.Size(224, 26);
+			this.MidLine.Size = new System.Drawing.Size(206, 26);
 			this.MidLine.Text = "中点直线";
 			this.MidLine.Click += new System.EventHandler(this.MidLine_Click);
 			// 
 			// BresenhamCircle
 			// 
 			this.BresenhamCircle.Name = "BresenhamCircle";
-			this.BresenhamCircle.Size = new System.Drawing.Size(224, 26);
+			this.BresenhamCircle.Size = new System.Drawing.Size(206, 26);
 			this.BresenhamCircle.Text = "Bresenham圆";
 			this.BresenhamCircle.Click += new System.EventHandler(this.BresenhamCircle_Click);
 			// 
@@ -111,15 +114,22 @@
 			// 
 			this.BezierCurve.Name = "BezierCurve";
 			this.BezierCurve.Size = new System.Drawing.Size(224, 26);
-			this.BezierCurve.Text = "(三次)Bezier曲线";
+			this.BezierCurve.Text = "贝塞尔曲线";
 			this.BezierCurve.Click += new System.EventHandler(this.BezierCurve_Click);
 			// 
 			// MyCharacter
 			// 
 			this.MyCharacter.Name = "MyCharacter";
-			this.MyCharacter.Size = new System.Drawing.Size(224, 26);
+			this.MyCharacter.Size = new System.Drawing.Size(206, 26);
 			this.MyCharacter.Text = "字符";
 			this.MyCharacter.Click += new System.EventHandler(this.MyCharacter_Click);
+			// 
+			// AntiLine
+			// 
+			this.AntiLine.Name = "AntiLine";
+			this.AntiLine.Size = new System.Drawing.Size(206, 26);
+			this.AntiLine.Text = "反走样直线";
+			this.AntiLine.Click += new System.EventHandler(this.BresenhamLine_Click);
 			// 
 			// 二维图形变换ToolStripMenuItem
 			// 
@@ -136,35 +146,35 @@
 			// TransMove
 			// 
 			this.TransMove.Name = "TransMove";
-			this.TransMove.Size = new System.Drawing.Size(224, 26);
+			this.TransMove.Size = new System.Drawing.Size(152, 26);
 			this.TransMove.Text = "图形平移";
 			this.TransMove.Click += new System.EventHandler(this.TransMove_Click);
 			// 
 			// TransRotate
 			// 
 			this.TransRotate.Name = "TransRotate";
-			this.TransRotate.Size = new System.Drawing.Size(224, 26);
+			this.TransRotate.Size = new System.Drawing.Size(152, 26);
 			this.TransRotate.Text = "图形旋转";
 			this.TransRotate.Click += new System.EventHandler(this.TransRotate_Click);
 			// 
 			// TransScale
 			// 
 			this.TransScale.Name = "TransScale";
-			this.TransScale.Size = new System.Drawing.Size(224, 26);
+			this.TransScale.Size = new System.Drawing.Size(152, 26);
 			this.TransScale.Text = "图形缩放";
 			this.TransScale.Click += new System.EventHandler(this.TransScale_Click);
 			// 
 			// TransSymmetry
 			// 
 			this.TransSymmetry.Name = "TransSymmetry";
-			this.TransSymmetry.Size = new System.Drawing.Size(224, 26);
+			this.TransSymmetry.Size = new System.Drawing.Size(152, 26);
 			this.TransSymmetry.Text = "对称变换";
 			this.TransSymmetry.Click += new System.EventHandler(this.TransSymmetry_Click);
 			// 
 			// TransShear
 			// 
 			this.TransShear.Name = "TransShear";
-			this.TransShear.Size = new System.Drawing.Size(224, 26);
+			this.TransShear.Size = new System.Drawing.Size(152, 26);
 			this.TransShear.Text = "错切变换";
 			this.TransShear.Click += new System.EventHandler(this.TransShear_Click);
 			// 
@@ -179,7 +189,7 @@
 			// CohenCut
 			// 
 			this.CohenCut.Name = "CohenCut";
-			this.CohenCut.Size = new System.Drawing.Size(224, 26);
+			this.CohenCut.Size = new System.Drawing.Size(169, 26);
 			this.CohenCut.Text = "Cohen算法";
 			this.CohenCut.Click += new System.EventHandler(this.CohenCut_Click);
 			// 
@@ -188,14 +198,14 @@
 			this.GraFill.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.ScanLineFill});
 			this.GraFill.Name = "GraFill";
-			this.GraFill.Size = new System.Drawing.Size(83, 24);
-			this.GraFill.Text = "图形填充";
+			this.GraFill.Size = new System.Drawing.Size(98, 26);
+			this.GraFill.Text = "多边形生成";
 			// 
 			// ScanLineFill
 			// 
 			this.ScanLineFill.Name = "ScanLineFill";
-			this.ScanLineFill.Size = new System.Drawing.Size(224, 26);
-			this.ScanLineFill.Text = "扫描线填充算法";
+			this.ScanLineFill.Size = new System.Drawing.Size(197, 26);
+			this.ScanLineFill.Text = "读取SHP多边形";
 			this.ScanLineFill.Click += new System.EventHandler(this.ScanLineFill_Click);
 			// 
 			// 投影ToolStripMenuItem
@@ -212,36 +222,36 @@
 			// ParalleProjection
 			// 
 			this.ParalleProjection.Name = "ParalleProjection";
-			this.ParalleProjection.Size = new System.Drawing.Size(224, 26);
+			this.ParalleProjection.Size = new System.Drawing.Size(152, 26);
 			this.ParalleProjection.Text = "平行投影";
 			this.ParalleProjection.Click += new System.EventHandler(this.ParalleProjection_Click);
 			// 
 			// PerspectiveProjection
 			// 
 			this.PerspectiveProjection.Name = "PerspectiveProjection";
-			this.PerspectiveProjection.Size = new System.Drawing.Size(224, 26);
+			this.PerspectiveProjection.Size = new System.Drawing.Size(152, 26);
 			this.PerspectiveProjection.Text = "透视投影";
 			this.PerspectiveProjection.Click += new System.EventHandler(this.PerspectiveProjection_Click);
 			// 
 			// SimpleProjection
 			// 
 			this.SimpleProjection.Name = "SimpleProjection";
-			this.SimpleProjection.Size = new System.Drawing.Size(224, 26);
+			this.SimpleProjection.Size = new System.Drawing.Size(152, 26);
 			this.SimpleProjection.Text = "简单投影";
 			this.SimpleProjection.Click += new System.EventHandler(this.SimpleProjection_Click);
 			// 
 			// SceneProjection
 			// 
 			this.SceneProjection.Name = "SceneProjection";
-			this.SceneProjection.Size = new System.Drawing.Size(224, 26);
+			this.SceneProjection.Size = new System.Drawing.Size(152, 26);
 			this.SceneProjection.Text = "场景漫游";
 			this.SceneProjection.Click += new System.EventHandler(this.SceneProjection_Click);
 			// 
 			// Exit
 			// 
 			this.Exit.Name = "Exit";
-			this.Exit.Size = new System.Drawing.Size(53, 24);
-			this.Exit.Text = "退出";
+			this.Exit.Size = new System.Drawing.Size(293, 24);
+			this.Exit.Text = "退出（它显得辣么多余，改个彩蛋好了）";
 			this.Exit.Click += new System.EventHandler(this.Exit_Click);
 			// 
 			// MainPicBox
@@ -251,7 +261,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
 			this.MainPicBox.Location = new System.Drawing.Point(13, 32);
 			this.MainPicBox.Name = "MainPicBox";
-			this.MainPicBox.Size = new System.Drawing.Size(822, 512);
+			this.MainPicBox.Size = new System.Drawing.Size(875, 528);
 			this.MainPicBox.TabIndex = 1;
 			this.MainPicBox.TabStop = false;
 			this.MainPicBox.Visible = false;
@@ -261,7 +271,7 @@
 			// 
 			this.label1.AutoSize = true;
 			this.label1.Font = new System.Drawing.Font("宋体", 15F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-			this.label1.Location = new System.Drawing.Point(12, 519);
+			this.label1.Location = new System.Drawing.Point(16, 532);
 			this.label1.Name = "label1";
 			this.label1.Size = new System.Drawing.Size(168, 25);
 			this.label1.TabIndex = 3;
@@ -269,11 +279,22 @@
 			this.label1.Visible = false;
 			this.label1.Click += new System.EventHandler(this.Label1_Click);
 			// 
+			// label2
+			// 
+			this.label2.AutoSize = true;
+			this.label2.Font = new System.Drawing.Font("宋体", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+			this.label2.Location = new System.Drawing.Point(707, 533);
+			this.label2.Name = "label2";
+			this.label2.Size = new System.Drawing.Size(178, 24);
+			this.label2.TabIndex = 4;
+			this.label2.Text = "此处应当有广告";
+			// 
 			// Form1
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(847, 556);
+			this.ClientSize = new System.Drawing.Size(900, 572);
+			this.Controls.Add(this.label2);
 			this.Controls.Add(this.label1);
 			this.Controls.Add(this.menuStrip1);
 			this.Controls.Add(this.MainPicBox);
@@ -320,6 +341,8 @@
         private System.Windows.Forms.ToolStripMenuItem SceneProjection;
         private System.Windows.Forms.PictureBox MainPicBox;
 		private System.Windows.Forms.Label label1;
+		private System.Windows.Forms.ToolStripMenuItem AntiLine;
+		private System.Windows.Forms.Label label2;
 	}
 }
 
